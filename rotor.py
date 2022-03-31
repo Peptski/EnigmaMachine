@@ -12,19 +12,14 @@ class Rotor:
         self.notch = notch
 
     def setChar(self, char):
-        if char in self.mapping.keys():
-            self.current = char
-            return True
-        else:
-            print("failed")
-            return False
+        self.current = char
 
     def incChar(self):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         self.current = alphabet[(alphabet.index(self.current) + 1) % 26]
 
     def rotateNext(self):
-        return self.current == self.notch
+        return self.current in self.notch
 
     def getChar(self, char, inv):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
