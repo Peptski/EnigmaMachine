@@ -4,9 +4,12 @@ class Enigma:
     plugBoard = {}
 
     def setRotor(self, num, rotor):
-        if num > 0 and num < 5:
+        if num > 0 and num < 4:
             self.rotors[num - 1] = rotor
             print("Rotor version {0} set at position {1}\n".format(rotor.version, num))
+
+    def setReflector(self, reflector):
+        self.rotors[3] = reflector
     
     def getRotors(self):
         return len([0 for rotor in self.rotors if rotor != None])
@@ -42,10 +45,14 @@ class Enigma:
         if char in self.plugBoard.keys():
             char = self.plugBoard[char]
         
-        # 1 -> 2 -> 3 -> REF
-        for i in [0, 1, 2, 3]:
+        # 1 -> 2 -> 3
+        for i in [0, 1, 2]:
             char = self.rotors[i].getChar(char, False)
             print(char)
+
+        # Reflection
+        char = self.rotors[3].getChar(char)
+        print(char)
         
         # inv(3) -> inv(2) -> inv(1)
         for i in [2, 1, 0]:
