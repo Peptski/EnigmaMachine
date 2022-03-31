@@ -1,5 +1,8 @@
 from rotor import Rotor
+from reflector import Reflector
 from enigma import Enigma
+
+alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 def main():
     machine = Enigma()
@@ -14,8 +17,8 @@ def main():
                 rotor = createRotor(version, index)
                 print("Enter the starting character for rotor {0}".format(version))
                 char = input().upper()
-                res = rotor.setChar(char)
-                if res:
+                if char in alphabet:
+                    rotor.setChar(char)
                     machine.setRotor(rotors + 1, rotor)
                     rotors += 1
                 else:
@@ -29,22 +32,26 @@ def main():
         print("Select a reflector")
         reflector = input().upper()
         if reflector in ["A", "B", "C"]:
-            machine.setRotor(4, createRotor(reflector, 1))
+            machine.setReflector(createReflector(reflector))
+        else:
+            print("Invalid reflector type!")
 
     pair = ""
     while not pair == "DONE":
         print("Enter a plugboard pair, or type done")
         pair = input().upper()
-        if len(pair) == 2:
-            #Does not check if alphabetical character
+        if len(pair) == 2 and pair[0] in alphabet and pair[1] in alphabet:
             machine.addPlug(pair)
+        else:
+            if pair != "DONE":
+                print("Invalid pair!")
 
+    # TODO Handle bad input when opening files
     print("\nEnter the filename of encrypted file")
     file =  input()
     with open(file, "r") as f:
         data = f.readlines()
     
-    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     newData = ""
     for line in data:
         for char in line:
@@ -52,12 +59,24 @@ def main():
             if char in alphabet:
                 print("Character: {0}".format(char.upper()))
                 newData += machine.getChar(char.upper())
-                print(newData[-1])
 
     print(newData)
 
+def createReflector(name):
+    mappings = {
+        "A"     : "EJMZALYXVBWFCRQUONTSPIKHGD",
+        "B"     : "YRUHQSLDPXNGOKMIEBFZCWVJAT",
+        "C"     : "FVPJIAOYEDRZXWGCTKUQSBNMHL"
+    }
+
+    if name in mappings.keys():
+        mapping = {alphabet[i] : mappings[name][i] for i in range(0, 26)}
+        return Reflector(mapping, name)
+    else:
+        return None
+
+
 def createRotor(name, ring):
-    alphabet =    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     mappings = {
         "I"     : "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
         "II"    : "AJDKSIRUXBLHWTMCQGZNPYFVOE",
@@ -66,24 +85,18 @@ def createRotor(name, ring):
         "V"     : "VZBRGITYUPSDNHLXAWMJQOFECK",
         "VI"    : "JPGVOUMFYQBENHZRDKASXLICTW",
         "VII"   : "NZJHGRCXMYSWBOUFAIVLPEKQDT",
-        "VIII"  : "FKQHTLXOCBJSPDZRAMEWNIUYGV",
-        "A"     : "EJMZALYXVBWFCRQUONTSPIKHGD",
-        "B"     : "YRUHQSLDPXNGOKMIEBFZCWVJAT",
-        "C"     : "FVPJIAOYEDRZXWGCTKUQSBNMHL"
+        "VIII"  : "FKQHTLXOCBJSPDZRAMEWNIUYGV"
     }
 
     notches = {
-        "I"     : "R",
-        "II"    : "F",
-        "III"   : "W",
-        "IV"    : "K",
-        "V"     : "A",
-        "VI"    : "AN",
-        "VII"   : "AN",
-        "VIII"  : "AN",
-        "A"     : "",
-        "B"     : "",
-        "C"     : ""
+        "I"     : ["R"],
+        "II"    : ["F"],
+        "III"   : ["W"],
+        "IV"    : ["K"],
+        "V"     : ["A"],
+        "VI"    : ["A", "N"],
+        "VII"   : ["A", "N"],
+        "VIII"  : ["A", "N"]
     }
 
     if name in mappings.keys():
