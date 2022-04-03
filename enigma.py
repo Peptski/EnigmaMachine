@@ -1,4 +1,3 @@
-# Enigma M3
 class Enigma:
     rotors = [None, None, None, None]
     plugBoard = {}
@@ -29,6 +28,7 @@ class Enigma:
         self.rotors[num] = self.rotors[num].setChar(char)
 
     def getChar(self, char):
+        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
         print(self.rotors[0].current, self.rotors[1].current, self.rotors[2].current)
 
@@ -46,18 +46,20 @@ class Enigma:
             char = self.plugBoard[char]
         
         # 1 -> 2 -> 3
+        offset = alphabet.index(char)
         for i in [0, 1, 2]:
-            char = self.rotors[i].getChar(char, False)
-            print(char)
+            char, offset = self.rotors[i].getChar(char, False, offset)
+            print(char, offset)
 
         # Reflection
-        char = self.rotors[3].getChar(char)
-        print(char)
+        char, offset = self.rotors[3].getChar(char, offset)
+        print(char, offset)
         
         # inv(3) -> inv(2) -> inv(1)
+        offset = alphabet.index(char)
         for i in [2, 1, 0]:
-            char = self.rotors[i].getChar(char, True)
-            print(char)
+            char, offset = self.rotors[i].getChar(char, True, offset)
+            print(char, offset)
         
         # Plugboard
         if char in self.plugBoard.keys():

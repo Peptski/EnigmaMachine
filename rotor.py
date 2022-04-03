@@ -21,11 +21,17 @@ class Rotor:
     def rotateNext(self):
         return self.current in self.notch
 
-    def getChar(self, char, inv):
+    def getChar(self, char, inv, offset):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        # Safety for reflector
-        if self.current in alphabet: current = self.current
-        else: current = "A"
 
-        if inv: return self.invMapping[alphabet[(alphabet.index(char) + alphabet.index(current)) % 26]]
-        else: return self.mapping[alphabet[(alphabet.index(char) + alphabet.index(current)) % 26]]
+        if inv: 
+            res = self.invMapping[chr(((ord(char) - ord(self.current) -1) % 26) + 65)]
+            print(self.invMapping[char])
+            print(ord(self.invMapping[char]))
+            print(ord(self.invMapping[char]) - 65)
+            print(ord(self.current))
+            print(ord(self.current) - 65)
+
+
+        else: res = self.mapping[alphabet[(offset + alphabet.index(self.current)) % 26]]
+        return [res, ((alphabet.index(res) - alphabet.index(self.current)) % 26)]
