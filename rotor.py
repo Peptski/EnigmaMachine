@@ -15,22 +15,17 @@ class Rotor:
         self.current = char
 
     def incChar(self):
-        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        self.current = alphabet[(ord(self.current) - 64) % 26]
+        self.current = chr(((ord(self.current) - 64) % 26) + 65)
 
     def rotateNext(self):
         return self.current in self.notch
 
     def getChar(self, char, inv, offset):
-        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
         if inv: 
             res = chr(((ord(self.invMapping[chr(((offset + (ord(self.current) - 65)) % 26) + 65)]) - ord(self.current)) % 26) + 65)
             offset = (ord(self.invMapping[chr(((offset + (ord(self.current) - 65)) % 26) + 65)]) - ord(self.current)) % 26
             return [res, offset]
-
-
         else: 
-            res = self.mapping[alphabet[(offset + (ord(self.current) - 65)) % 26]]
-            offset = (alphabet.index(res) - (ord(self.current) - 65)) % 26
+            res = self.mapping[chr(((offset + (ord(self.current) - 65)) % 26) + 65)]
+            offset = ((ord(res) - 65) - (ord(self.current) - 65)) % 26
             return [res, offset]

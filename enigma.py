@@ -28,9 +28,6 @@ class Enigma:
         self.rotors[num] = self.rotors[num].setChar(char)
 
     def getChar(self, char):
-        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-        print(self.rotors[0].current, self.rotors[1].current, self.rotors[2].current)
 
         # Spin rotors
         self.rotors[0].incChar()
@@ -38,8 +35,6 @@ class Enigma:
             self.rotors[1].incChar()
             if self.rotors[1].rotateNext():
                 self.rotors[2].incChar()
-
-        print(self.rotors[0].current, self.rotors[1].current, self.rotors[2].current)
         
         # Plugboard
         if char in self.plugBoard.keys():
@@ -49,16 +44,13 @@ class Enigma:
         offset = ord(char) - 65
         for i in [0, 1, 2]:
             char, offset = self.rotors[i].getChar(char, False, offset)
-            print(char, offset)
 
         # Reflection
         char, offset = self.rotors[3].getChar(char, offset)
-        print(char, offset)
         
         # inv(3) -> inv(2) -> inv(1)
         for i in [2, 1, 0]:
             char, offset = self.rotors[i].getChar(char, True, offset)
-            print(char, offset)
         
         # Plugboard
         if char in self.plugBoard.keys():
