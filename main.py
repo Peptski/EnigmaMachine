@@ -6,9 +6,9 @@ alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 def main():
     machine = Enigma()
-    rotors = 0
-    while rotors < 3:
-        version = input("Enter the version of rotor number {0}: ".format(rotors + 1))
+    rotors = [1, 2, 3]
+    while len(rotors):
+        version = input("Enter the version of rotor number {0}: ".format(4 - len(rotors)))
         if version in ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"]:
             index = int(input("Enter the ring setting for rotor {0}: ".format(version)))
             if index > 0 and index < 27:
@@ -16,14 +16,14 @@ def main():
                 char = input("Enter the starting character for rotor {0}: ".format(version)).upper()
                 if char in alphabet:
                     rotor.setChar(char)
-                    machine.setRotor(rotors + 1, rotor)
-                    rotors += 1
+                    machine.setRotor(rotors[-1], rotor)
+                    rotors.pop()
                 else:
-                    print("Invalid start character!")
+                    print("Invalid start character!, retry!\n")
             else:
-                print("Invalid ring value!")
+                print("Invalid ring value!, retry!\n")
         else:
-            print("Invalid version of rotor!")
+            print("Invalid version of rotor!, retry!\n")
 
     while machine.rotors[3] == None:
         reflector = input("Select a reflector: ").upper()
