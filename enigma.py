@@ -46,7 +46,7 @@ class Enigma:
             char = self.plugBoard[char]
         
         # 1 -> 2 -> 3
-        offset = alphabet.index(char)
+        offset = ord(char) - 65
         for i in [0, 1, 2]:
             char, offset = self.rotors[i].getChar(char, False, offset)
             print(char, offset)
@@ -56,7 +56,6 @@ class Enigma:
         print(char, offset)
         
         # inv(3) -> inv(2) -> inv(1)
-        offset = alphabet.index(char)
         for i in [2, 1, 0]:
             char, offset = self.rotors[i].getChar(char, True, offset)
             print(char, offset)

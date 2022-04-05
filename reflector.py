@@ -9,6 +9,6 @@ class Reflector:
         self.listMapping = listMapping
 
     def getChar(self, char, offset):
-        offset = ((ord(char) - 65) - (offset - self.listMapping.index(chr(offset + 65)))) % 26
-        char = chr(offset + 65)
+        char = self.mapping[chr(offset + 65)]
+        offset = ord(self.mapping[chr(offset + 65)]) - 65
         return char, offset

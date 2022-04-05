@@ -25,19 +25,12 @@ class Rotor:
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
         if inv: 
-            res = self.invMapping[alphabet[(offset - (ord(self.current) - 64)) % 26]]
-            print(alphabet[(offset - (ord(self.current) - 64)) % 26])
-            print(chr(offset + 65))
-            print(ord(self.invMapping[char]))
-            print(ord(self.invMapping[char]) - 65)
-            print(ord(self.current))
-            print(ord(self.current) - 65)
-            print(res)
-            return [res, (ord(self.current) - 64)]
+            res = chr(((ord(self.invMapping[chr(((offset + (ord(self.current) - 65)) % 26) + 65)]) - ord(self.current)) % 26) + 65)
+            offset = (ord(self.invMapping[chr(((offset + (ord(self.current) - 65)) % 26) + 65)]) - ord(self.current)) % 26
+            return [res, offset]
 
 
         else: 
             res = self.mapping[alphabet[(offset + (ord(self.current) - 65)) % 26]]
-            return [res, ((alphabet.index(res) - (ord(self.current) - 65)) % 26)]
-
-        # P -> N -> G 
+            offset = (alphabet.index(res) - (ord(self.current) - 65)) % 26
+            return [res, offset]
