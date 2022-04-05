@@ -16,7 +16,7 @@ class Rotor:
 
     def incChar(self):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        self.current = alphabet[(alphabet.index(self.current) + 1) % 26]
+        self.current = alphabet[(ord(self.current) - 64) % 26]
 
     def rotateNext(self):
         return self.current in self.notch
@@ -25,13 +25,19 @@ class Rotor:
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
         if inv: 
-            res = self.invMapping[chr(((ord(char) - ord(self.current) -1) % 26) + 65)]
-            print(self.invMapping[char])
+            res = self.invMapping[alphabet[(offset - (ord(self.current) - 64)) % 26]]
+            print(alphabet[(offset - (ord(self.current) - 64)) % 26])
+            print(chr(offset + 65))
             print(ord(self.invMapping[char]))
             print(ord(self.invMapping[char]) - 65)
             print(ord(self.current))
             print(ord(self.current) - 65)
+            print(res)
+            return [res, (ord(self.current) - 64)]
 
 
-        else: res = self.mapping[alphabet[(offset + alphabet.index(self.current)) % 26]]
-        return [res, ((alphabet.index(res) - alphabet.index(self.current)) % 26)]
+        else: 
+            res = self.mapping[alphabet[(offset + (ord(self.current) - 65)) % 26]]
+            return [res, ((alphabet.index(res) - (ord(self.current) - 65)) % 26)]
+
+        # P -> N -> G 
