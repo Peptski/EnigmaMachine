@@ -69,7 +69,7 @@ def createReflector(name):
 
 
 def createRotor(name, ring):
-    mappings = {
+    mappings = { #"ABCDEFGHIJKLMNOPQRSTUVWXYX"
         "I"     : "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
         "II"    : "AJDKSIRUXBLHWTMCQGZNPYFVOE",
         "III"   : "BDFHJLCPRTXVZNYEIWGAKMUSQO",
@@ -92,8 +92,9 @@ def createRotor(name, ring):
     }
 
     if name in mappings.keys():
-        mapping = {alphabet[i] : mappings[name][(i + ring - 1) % 26] for i in range(0, 26)}
-        invMapping = {mappings[name][(i + ring - 1) % 26] : alphabet[i] for i in range(0, 26)}
+        mapping = {alphabet[i] : mappings[name][(i + (ring - 1)) % 26] for i in range(0, 26)}
+        invMapping = {mappings[name][(i + (ring - 1)) % 26] : alphabet[i] for i in range(0, 26)}
+        print(mapping, invMapping)
         return Rotor(mapping, invMapping, name, notches[name])
     else:
         return None
