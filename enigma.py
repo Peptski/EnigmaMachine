@@ -35,31 +35,25 @@ class Enigma:
             self.rotors[1].incChar()
             if self.rotors[1].rotateNext():
                 self.rotors[2].incChar()
-        print("Char: ", char)
 
         # Plugboard
         if char in self.plugBoard.keys():
             char = self.plugBoard[char]
-            print(char)
         
         # 1 -> 2 -> 3
         offset = ord(char) - 65
         for i in [0, 1, 2]:
             char, offset = self.rotors[i].getChar(char, False, offset)
-            print(char)
 
         # Reflection
         char, offset = self.rotors[3].getChar(char, offset)
-        print(char)
         
         # inv(3) -> inv(2) -> inv(1)
         for i in [2, 1, 0]:
             char, offset = self.rotors[i].getChar(char, True, offset)
-            print(char)
         
         # Plugboard
         if char in self.plugBoard.keys():
             char = self.plugBoard[char]
-            print(char)
 
         return char
